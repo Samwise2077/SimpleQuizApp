@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainMenuFragment">
+
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.flowproject.ui.game.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game">
+        <argument
+            android:name="questionList"
+            app:argType="com.example.flowproject.data.Question[]" />
+        <action
+            android:id="@+id/action_gameFragment_to_gameResultsFragment"
+            app:destination="@id/gameResultsFragment" />
+        <argument
+            android:name="difficulty"
+            app:argType="com.example.flowproject.data.Difficulty" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="com.example.flowproject.ui.mainmenu.MainMenuFragment"
+        android:label="main_menu"
+        tools:layout="@layout/fragment_main_menu" />
+    <dialog
+        android:id="@+id/choosingStageFragment"
+        android:name="com.example.flowproject.ui.choosingstage.ChoosingStageFragment"
+        android:label="ChoosingStageFragment" >
+        <action
+            android:id="@+id/action_choosingStageFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </dialog><action android:id="@+id/action_global_choosingStageFragment" app:destination="@id/choosingStageFragment"/>
+    <fragment
+        android:id="@+id/gameResultsFragment"
+        android:name="com.example.flowproject.ui.gameresults.GameResultsFragment"
+        android:label="fragment_game_results"
+        tools:layout="@layout/fragment_game_results" >
+        <argument
+            android:name="resultList"
+            app:argType="com.example.flowproject.ui.gameresults.Result[]" />
+        <argument
+            android:name="highScore"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">FlowProject</string>
+    <string-array name = "subjects">
+        <item>Math</item>
+        <item>History</item>
+        <item>Geography</item>
+    </string-array>
+
+    <string-array name = "difficulties">
+        <item> Easy </item>
+        <item> Medium </item>
+        <item> Hard </item>
+    </string-array>
+</resources>

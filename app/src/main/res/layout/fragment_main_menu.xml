@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
+    tools:context=".ui.mainmenu.MainMenuFragment">
+
+    <Button
+        android:id="@+id/launchConditions"
+        android:layout_width="257dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="428dp"
+        android:layout_marginEnd="108dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Start Game"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="252dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="108dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Settings"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/launchConditions"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/launchConditions"
+        app:layout_constraintTop_toBottomOf="@+id/launchConditions" />
+
+    <TextView
+        android:id="@+id/highScoreTextView"
+        android:layout_width="220dp"
+        android:layout_height="73dp"
+        android:layout_marginBottom="48dp"
+        android:textSize="23sp"
+        android:textColor="@color/black"
+        android:text="Your high score: "
+        app:layout_constraintBottom_toTopOf="@+id/launchConditions"
+        app:layout_constraintEnd_toEndOf="@+id/launchConditions"
+        app:layout_constraintHorizontal_bias="0.405"
+        app:layout_constraintStart_toStartOf="@+id/launchConditions" />
+</androidx.constraintlayout.widget.ConstraintLayout>
