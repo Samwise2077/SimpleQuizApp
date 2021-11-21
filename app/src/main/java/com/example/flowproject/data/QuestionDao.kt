@@ -10,7 +10,7 @@ interface QuestionDao {
 
 
     @Query("SELECT * FROM question_table WHERE subject = :subject AND difficulty = :difficulty")
-    fun getQuestions(subject: Subject, difficulty: Difficulty) : LiveData<List<Question>>
+    fun getQuestions(subject: Subject, difficulty: Difficulty): LiveData<List<Question>>
 
     @Update
     suspend fun update(question: Question)
@@ -21,6 +21,6 @@ interface QuestionDao {
     @Delete
     suspend fun delete(question: Question)
 
-    @Query("Delete FROM question_table")
+    @Query("DELETE FROM question_table")
     fun deleteAll()
 }

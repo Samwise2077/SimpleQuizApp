@@ -32,6 +32,14 @@
         <action
             android:id="@+id/action_choosingStageFragment_to_gameFragment"
             app:destination="@id/gameFragment" />
+        <argument
+            android:name="subject"
+            app:argType="com.example.flowproject.data.Subject"
+            android:defaultValue="MATH" />
+        <argument
+            android:name="difficulty"
+            app:argType="com.example.flowproject.data.Difficulty"
+            android:defaultValue="EASY" />
     </dialog><action android:id="@+id/action_global_choosingStageFragment" app:destination="@id/choosingStageFragment"/>
     <fragment
         android:id="@+id/gameResultsFragment"
@@ -45,5 +53,8 @@
             android:name="highScore"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_gameResultsFragment_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment" />
     </fragment>
 </navigation>

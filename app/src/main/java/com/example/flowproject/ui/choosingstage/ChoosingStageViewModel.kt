@@ -3,45 +3,43 @@ package com.example.flowproject.ui.choosingstage
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 import com.example.flowproject.data.*
 import com.example.flowproject.di.ApplicationScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChoosingStageViewModel  @Inject constructor(
-     val questionDao: QuestionDao,
+class ChoosingStageViewModel @Inject constructor(
+    private val questionDao: QuestionDao,
     @ApplicationScope val applicationScope: CoroutineScope,
-      val preferencesManager: PreferencesManager
+    private val preferencesManager: PreferencesManager,
+    private val state: SavedStateHandle
 ) : ViewModel() {
     private val TAG = "ChoosingStageViewModel"
     private val listLiveData: LiveData<List<Question>>
     val preferencesFlow = preferencesManager.preferencesFlow
-    init{
+    var lastSubject: Subject? = state.get<Subject>("subject")
+    var lastDifficulty: Difficulty? = state.get<Difficulty>("difficulty")
+
+    init {
         listLiveData = questionDao.getQuestions(Subject.MATH, Difficulty.EASY)
     }
-    //  val questions = questionDao.getQuestions(Subject.MATH)
+
 
     fun getQuestions(subject: Subject, difficulty: Difficulty): LiveData<List<Question>> {
         return questionDao.getQuestions(subject, difficulty)
 
     }
-   /* fun onStartButtonClicked(subject: Subject, difficulty: String): LiveData<List<Question>> {
-          lateinit var list: List<Question>
-          Log.d("", "onStartButtonClicked: subject = $subject")
-           applicationScope.launch {
-             list = questionDao.getQuestions(subject)
-          }
-          return list
 
 
-    }*/
-
-       fun fillList(){
+       fun onListFilled(){
            applicationScope.launch {
                questionDao.deleteAll()
 
@@ -57,21 +55,20 @@ class ChoosingStageViewModel  @Inject constructor(
                questionDao.insert(Question(Subject.HISTORY, Difficulty.MEDIUM, "Who was the first president of the US?", listOf("G. Washington", "A. Lincoln", "T. Jefferson", "J. Kennedy")))
                questionDao.insert(Question(Subject.HISTORY, Difficulty.MEDIUM, "What is the first Russian ruling dynasty?", listOf("Rurik", "Romanov", "Sheremetev", "Tolstoy")))
 
-
-
                Log.d(TAG, "onListChanged: ok")
            }
        }
 
-       fun onLastSubjectSelected(subject: Subject, context: Context){
+       fun onLastSubjectSelected(subject: Subject){
            applicationScope.launch {
-               preferencesManager.updateLastSubject(subject, context)
+               Log.d(TAG, "onLastSubjectSelected: $subject")
+               preferencesManager.updateLastSubject(subject)
            }
        }
 
-        fun onLastDifficultySelected(difficulty: Difficulty, context: Context){
+        fun onLastDifficultySelected(difficulty: Difficulty){
           applicationScope.launch {
-            preferencesManager.updateLastDifficulty(difficulty, context)
+            preferencesManager.updateLastDifficulty(difficulty)
 
           }
     }

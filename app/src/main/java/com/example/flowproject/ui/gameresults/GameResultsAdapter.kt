@@ -10,41 +10,44 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.flowproject.data.Question
 import com.example.flowproject.databinding.ItemQuestionBinding
 
-class GameResultsAdapter : ListAdapter<Result, GameResultsAdapter.GameResultsViewHolder>(DiffCallback()) {
-    class GameResultsViewHolder(private val binding: ItemQuestionBinding) : RecyclerView.ViewHolder(binding.root){
+class GameResultsAdapter :
+    ListAdapter<Result, GameResultsAdapter.GameResultsViewHolder>(DiffCallback()) {
+    class GameResultsViewHolder(private val binding: ItemQuestionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-            init {
-                binding.apply {
-                    root.setOnClickListener {
-                        val position = adapterPosition
+        init {
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
 
 
-                    }
                 }
             }
+        }
 
-             fun bind(result: Result){
-                 binding.apply {
-                     questionText.text = result.questionText
-                     correctAnswerTextView.text = "Correct answer: " + result.correctAnswer
-                     correctAnswerTextView.setTextColor(Color.GREEN)
-                     yourAnswerTextView.text = "Your answer: " + result.yourAnswer
-                     if(result.correctAnswer == result.yourAnswer){
-                        correctAnswerTextView.setTextColor(Color.BLACK)
-                         yourAnswerTextView.setTextColor(Color.GREEN)
-                     }
+        fun bind(result: Result) {
+            binding.apply {
+                questionText.text = result.questionText
+                correctAnswerTextView.text = "Correct answer: " + result.correctAnswer
+                correctAnswerTextView.setTextColor(Color.GREEN)
+                yourAnswerTextView.text = "Your answer: " + result.yourAnswer
+                if (result.correctAnswer == result.yourAnswer) {
+                    correctAnswerTextView.setTextColor(Color.BLACK)
+                    yourAnswerTextView.setTextColor(Color.GREEN)
+                }
 
-                 }
-             }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameResultsViewHolder {
-        val binding = ItemQuestionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemQuestionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GameResultsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GameResultsViewHolder, position: Int) {
-       holder.bind(getItem(position))
+        holder.bind(getItem(position))
     }
 
 

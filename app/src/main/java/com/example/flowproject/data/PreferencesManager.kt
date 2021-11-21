@@ -17,62 +17,67 @@ import kotlin.coroutines.coroutineContext
 
 private const val TAG = "PreferencesManager"
 
-data class FilterPreferences(val highScore: Int, val lastSubject: Subject, val lastDifficulty: Difficulty){
+data class FilterPreferences(
+    val highScore: Int,
+    val lastSubject: Subject,
+    val lastDifficulty: Difficulty
+)
 
-}
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
 
 @Singleton
-class PreferencesManager  @Inject constructor(@ApplicationContext context: Context) {
-     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
-
-    val preferencesFlow: Flow<Unit> = context.dataStore.data
+class PreferencesManager @Inject constructor(@ApplicationContext context: Context) {
+    private val dataStore = context.dataStore
+    val preferencesFlow: Flow<FilterPreferences> = dataStore.data
         .catch { exception ->
-            if(exception is IOException){
-                Log.e(TAG, "Error reading preferences, $exception" )
+            if (exception is IOException) {
+                Log.e(TAG, "Error reading preferences, $exception")
                 emit(emptyPreferences())
-            }
-            else{
+            } else {
                 throw(exception)
             }
 
         }
-        .map { preferences  ->
-            // No type safety.
-           // preferences[] ?: 0
+        .map { preferences ->
             val highScore = preferences[PreferencesKeys.HIGH_SCORE] ?: 0
             val lastSubject = Subject.valueOf(
                 preferences[PreferencesKeys.LAST_SUBJECT] ?: Subject.MATH.name
             )
 
-            val lastDifficulty = Difficulty.valueOf (
-                    preferences[PreferencesKeys.LAST_DIFFICULTY] ?: Difficulty.EASY.name)
+            val lastDifficulty = Difficulty.valueOf(
+                preferences[PreferencesKeys.LAST_DIFFICULTY] ?: Difficulty.EASY.name
+            )
             FilterPreferences(highScore, lastSubject, lastDifficulty)
         }
 
 
-        suspend fun updateHighScore(highScore: Int, context: Context){
-            context.dataStore.edit { preferences ->
-                preferences[PreferencesKeys.HIGH_SCORE] = highScore
+    suspend fun updateHighScore(highScore: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.HIGH_SCORE] = highScore
 
-            }
         }
-    suspend fun updateLastSubject(subject: Subject, context: Context){
-        context.dataStore.edit { preferences ->
+    }
+
+    suspend fun updateLastSubject(subject: Subject) {
+        dataStore.edit { preferences ->
             preferences[PreferencesKeys.LAST_SUBJECT] = subject.name
 
         }
     }
-    suspend fun updateLastDifficulty(difficulty: Difficulty, context: Context){
-        context.dataStore.edit { preferences ->
+
+    suspend fun updateLastDifficulty(difficulty: Difficulty) {
+        dataStore.edit { preferences ->
             preferences[PreferencesKeys.LAST_DIFFICULTY] = difficulty.name
 
         }
-    }
-        private object PreferencesKeys{
-           val HIGH_SCORE = intPreferencesKey("high_score")
-           val LAST_SUBJECT = stringPreferencesKey("last_subject")
-           val LAST_DIFFICULTY = stringPreferencesKey("last_difficulty")
 
-        }
+    }
+
+    private object PreferencesKeys {
+        val HIGH_SCORE = intPreferencesKey("high_score")
+        val LAST_SUBJECT = stringPreferencesKey("last_subject")
+        val LAST_DIFFICULTY = stringPreferencesKey("last_difficulty")
+
+    }
 
 }

@@ -8,19 +8,21 @@ import androidx.room.TypeConverters
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
-enum class Difficulty {EASY, MEDIUM, HARD}
+enum class Difficulty { EASY, MEDIUM, HARD }
 
-enum class Subject{MATH, HISTORY, LITERATURE}
+enum class Subject { MATH, HISTORY, LITERATURE }
 
 
 @Entity(tableName = "question_table")
 @Parcelize
 @TypeConverters(Converters::class)
-data class Question (val subject: Subject,
-                     val difficulty: Difficulty,
-                     val text: String,
-                     val options: List<String>,
-                     @PrimaryKey(autoGenerate = true) val id: Int = 0) : Parcelable {
+data class Question(
+    val subject: Subject,
+    val difficulty: Difficulty,
+    val text: String,
+    val options: List<String>,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
+) : Parcelable {
 
 
 }
