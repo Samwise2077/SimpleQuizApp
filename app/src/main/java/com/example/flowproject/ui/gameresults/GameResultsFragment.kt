@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flowproject.R
 import com.example.flowproject.databinding.FragmentGameResultsBinding
+import com.example.flowproject.util.exhaustive
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -31,9 +33,7 @@ class GameResultsFragment : Fragment(R.layout.fragment_game_results) {
             }
             gameResultsAdapter.submitList(viewModel.results)
             btnBackToMenu.setOnClickListener {
-                val action =
-                    GameResultsFragmentDirections.actionGameResultsFragmentToMainMenuFragment()
-                findNavController().navigate(action)
+                viewModel.onBackButtonClick()
             }
             yourScore.text = yourScore.text.toString() + viewModel.scores
         }
@@ -41,6 +41,16 @@ class GameResultsFragment : Fragment(R.layout.fragment_game_results) {
             if (viewModel.scores > viewModel.preferencesFlow.first().highScore) {
                 viewModel.onHighScoreChanged(viewModel.scores)
 
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.gameResultsEvent.collect { event ->
+                when(event){
+                    is GameResultsViewModel.GameResultsEvent.NavigateBackToMainMenu ->{
+                       val action = GameResultsFragmentDirections.actionGameResultsFragmentToMainMenuFragment()
+                       findNavController().navigate(action)
+                    }
+                }.exhaustive
             }
         }
 

@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "ChoosingStageViewModel"
+
+
 @HiltViewModel
 class ChoosingStageViewModel @Inject constructor(
     private val questionDao: QuestionDao,
@@ -22,15 +25,11 @@ class ChoosingStageViewModel @Inject constructor(
     private val preferencesManager: PreferencesManager,
     private val state: SavedStateHandle
 ) : ViewModel() {
-    private val TAG = "ChoosingStageViewModel"
-    private val listLiveData: LiveData<List<Question>>
+    private val listLiveData: LiveData<List<Question>> =
+        questionDao.getQuestions(Subject.MATH, Difficulty.EASY)
     val preferencesFlow = preferencesManager.preferencesFlow
     var lastSubject: Subject? = state.get<Subject>("subject")
     var lastDifficulty: Difficulty? = state.get<Difficulty>("difficulty")
-
-    init {
-        listLiveData = questionDao.getQuestions(Subject.MATH, Difficulty.EASY)
-    }
 
 
     fun getQuestions(subject: Subject, difficulty: Difficulty): LiveData<List<Question>> {

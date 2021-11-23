@@ -25,6 +25,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
+private const val TAG = "ChoosingStage"
+
+
 @AndroidEntryPoint
 class ChoosingStageFragment : DialogFragment() {
 
@@ -33,7 +36,6 @@ class ChoosingStageFragment : DialogFragment() {
     lateinit var selectedDifficulty: String
     private lateinit var action: NavDirections
 
-    private val TAG = "ChoosingStage"
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         Log.d(TAG, "onViewCreated: okay?")
         val builder = AlertDialog.Builder(requireContext())

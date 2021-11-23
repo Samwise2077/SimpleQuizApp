@@ -15,11 +15,12 @@ import com.example.flowproject.ui.gameresults.Result
 import com.example.flowproject.util.exhaustive
 import kotlinx.coroutines.flow.collect
 
+private const val TAG = "GameFragment"
+
 
 @AndroidEntryPoint
 class GameFragment : Fragment(R.layout.fragment_game) {
     private val viewModel: GameViewModel by viewModels()
-    private val TAG = "GameFragment"
     private val questionCounter = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
